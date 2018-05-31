@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>#(token.token_name)&nbsp;(#(token.token_symbol))</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+			<p class="bg-primary btn-lg">代币详情信息
+				<small class="pull-right">
+					<a href="/" style="text-decoration:none"><font color="white">首页</font></a>
+					<a href="/eth/tokens" style="text-decoration:none"><font color="white">/代币信息</font></a>
+					<a href="/eth/token/#(tokenAddress)" style="text-decoration:none"><font color="white">/#(token.token_name)</font></a>
+					/#(holder)
+				</small>
+			</p>
+			<div class="row" style="margin:20px;">
+				<div class="col-sm-6 col-md-6 col-lg-6">
+					<p>
+						持有者地址：#(holder)
+					</p>
+					<p>
+						持有量：
+					</p>
+					<p>
+						交易总数：#(txNum)
+					</p>
+				</div>
+				<div class="col-sm-6 col-md-6 col-lg-6">
+					<div>
+						&emsp;合约地址：#(tokenAddress)
+					</div>
+				</div>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="15%">交易哈希值</th>
+						<th width="25%">交易时间</th>
+						<th width="20%">发送者</th>
+						<th width="10%"></th>
+						<th width="20%">接收者</th>
+						<th width="10%">金额</th>
+					</tr>
+				</thead>
+				<tbody>
+				#for(tx : holderTxs.list)
+				<tr>
+					<td>#(tx.hash)</td>
+					<td>#(tx.periodTime)&nbsp;#(tx.time)</td>
+					#if(tx.token_from==holder)
+					<td>#(tx.token_from)</td>
+					<td><button type="button" class="btn btn-warning btn-xs">转给</button></td>
+					<td><a href="/eth/tokenAddress/#(tokenAddress)?a=#(tx.token_to)">#(tx.token_to)</a></td>
+					#else if(tx.token_to==holder)
+					<td><a href="/eth/tokenAddress/#(tokenAddress)?a=#(tx.token_from)">#(tx.token_from)</a></td>
+					<td><button type="button" class="btn btn-success btn-xs">转给</button></td>
+					<td>#(tx.token_to)</td>
+					#end
+					<td>#(tx.token_value)#(token.token_symbol)</td>
+				</tr>
+				#end
+				</tbody>
+			</table>
+			</div>
+			<nav aria-label="Page navigation">
+				<ul class="pager">
+					#if(holderTxs.pageNumber==1)
+					<li><span>首页</span></li>
+					<li><span>上一页</span></li>
+					#else if(holderTxs.pageNumber>holderTxs.totalPage)
+					<li><a href="/eth/tokenAddress/#(tokenAddress)?a=#(holder)">首页</a></li>
+					<li><a href="/eth/tokenAddress/#(tokenAddress)-#(holderTxs.totalPage)?a=#(holder)">上一页</a></li>
+					#else
+					<li><a href="/eth/tokenAddress/#(tokenAddress)?a=#(holder)">首页</a></li>
+					<li><a href="/eth/tokenAddress/#(tokenAddress)-#(holderTxs.pageNumber-1)?a=#(holder)">上一页</a></li>
+					#end
+					<li><span>#(holderTxs.pageNumber)/#(holderTxs.totalPage)</span></li>
+					#if(holderTxs.pageNumber>=holderTxs.totalPage)				
+					<li><span>下一页</span></li>
+					<li><span>末页</span></li>
+					#else
+					<li><a href="/eth/tokenAddress/#(tokenAddress)-#(holderTxs.pageNumber+1)?a=#(holder)">下一页</a></li>
+					<li><a href="/eth/tokenAddress/#(tokenAddress)-#(holderTxs.totalPage)?a=#(holder)">末页</a></li>
+					#end
+				</ul>
+			</nav>
+		</div>
+		#include("/include/footer.html")
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>注册</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/login.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+	<style type="text/css">
+		.modal .panel{
+			margin-bottom: 0;
+		}
+		.error{
+			color: orange;
+		}
+		.container img{
+			max-width: 100%;
+		}
+	</style>
+</head>
+<body>
+  	#include("/include/header.html")
+	<div class="container">
+		#if(userid)<img alt="" src="/img/invite.jpg">#end
+		<form id="registerForm" class="form-signin" action="registerSubmit" method="post">
+			#if(userid)<h4>用户&nbsp;<span class="bg-success">#(username)</span>&nbsp;邀请您注册</h4>
+			#else<h2 class="form-signin-heading">注册</h2>
+			#end
+			<label for="username" class="sr-only">用户名</label>
+			<input type="text" id="username" name="username" class="form-control" placeholder="用户名" autofocus maxlength="11">
+			<label for="password" class="sr-only">密码</label>
+			<input type="password" id="password" name="password" class="form-control" placeholder="密码" maxlength="20">
+			<label for="repassword" class="sr-only">重复密码</label>
+			<input type="password" id="repassword" name="repassword" class="form-control" placeholder="重复密码" maxlength="20">
+			<div class="input-group">
+				<label for="code" class="sr-only">验证码</label>
+				<input type="text" id="code" name="code" class="form-control" placeholder="短信验证码" maxlength="6">
+				<span class="input-group-btn">
+					<button id="send" class="btn btn-lg btn-success" disabled type="button">发送验证码</button>
+				</span>
+			</div>
+			<label for="id" class="sr-only">邀请码</label>
+			<input type="text" id="id" name="id" class="form-control #if(userid)hidden#end" placeholder="邀请码(选填)" value="#(userid)" maxlength="20">
+			<button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+		</form>
+	</div>
+	<div id="view">
+		<div class="modal fade" id="msgModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="panel panel-danger">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span :class="['glyphicon', msg.success?'glyphicon-ok':'glyphicon-remove']"></span> {{msg.type}}{{msg.success?'成功':'失败'}}</h3>
+						</div>
+						<div class="panel-body">
+							{{msg.msg}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	#include("/include/footer.html")
+</body>
+<script type="text/javascript">
+	var vm = new Vue({
+		el: '#view',
+		data: {
+			msg: {}
+		}
+	})
+	$.validator.addMethod("mobile", function(value, element){return this.optional(element) || /^1\d{10}$/.test(value)});
+	var $registerForm = $('#registerForm');
+	var $username = $('#username');
+	var $password = $('#password');
+	var $repassword = $('#repassword');
+	var $code = $('#code');
+	var $send = $('#send');
+	var $submit = $(':submit');
+	var $msgModal = $('#msgModal');
+	var $id = $('#id');
+	$registerForm.validate({
+		rules: {
+			username: {
+				required: true,
+				mobile: true,
+				remote: {
+					url: '/user/checkUsernameNotExist',
+					cache: false
+				}
+			},
+			password: {
+				required: true,
+				minlength: 6
+			},
+			repassword: {
+				required: true,
+				equalTo: '#password'
+			},
+			code: {
+				required: true
+			}
+		},
+		messages: {
+			username: {
+				required: "必填",
+				mobile: "请输入正确手机号",
+				remote: "账号已存在"
+			},
+			password: {
+				required: "必填",
+				minlength: "密码最少为6位"
+			},
+			repassword: {
+				required: "必填",
+				equalTo: "两次密码必须一致"
+			},
+			code: {
+				required: "必填"
+			}
+		},
+		submitHandler: function(form){
+			$.ajax({
+				url: $registerForm.attr('action'),
+				type: 'POST',
+				data: {
+					username: $username.val(),
+					password: $password.val(),
+					repassword: $repassword.val(),
+					code: $code.val(),
+					id: $id.val()
+				},
+				dataType: 'json',
+				cache: false,
+				beforeSend: function() {
+					$submit.prop('disabled', true);
+				},
+				success: function(data){
+					vm.msg = data;
+					$msgModal.modal('show');
+					setTimeout(function(){
+						$msgModal.modal('hide');
+						if(data.success){
+							location.href = '#(redirectUrl)';
+						}
+						$submit.prop('disabled', false);
+					}, 2000);
+				}
+			})
+		}
+	})
+	//发送验证码
+	var t, countdown = 60, sending = false;
+	$username.on('input', function(){
+		if ($registerForm.validate().element($username) && !sending) {
+			$send.prop("disabled", false);
+		}else{
+			$send.prop("disabled", true);
+		}
+	})
+	$send.click(function(){
+		if(!$registerForm.validate().element($username)) return $send.prop("disabled", true);
+		$send.prop("disabled", true);
+		sending = true;
+		setTime();
+		t = setInterval(function(){setTime()},1000);
+		$.ajax({
+			url: "/user/sendSmsCode",
+			data: {
+				mobile: $username.val(),
+				captcha: '#(smsCaptcha)'
+			},
+			type: "POST",
+			dataType: "json",
+			cache: false,
+			success: function(data) {
+				vm.msg = data;
+				$msgModal.modal('show');
+				setTimeout(function(){
+					$msgModal.modal('hide');
+				}, 2000);
+			}
+		});
+	})	
+	function setTime() {
+		if (countdown <= 0) {
+			clearInterval(t);
+			sending = false;
+			$send.prop("disabled", false);
+			$send.text("重发动态码");
+			countdown = 60; 
+		} else {
+			$send.text(countdown + "秒后重发"); 
+			countdown--;
+		}
+	};
+</script>
+</html>
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title></title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		.table{
+			table-layout: fixed;
+			text-align: center;
+		}
+		.table th{
+			text-align: center;
+		}
+		.detail td,
+		.table td{
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	</style>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+			<p class="bg-primary btn-lg">#(token.token_name)&emsp;<small>#(token.token_symbol)</small>
+				<small class="pull-right"><a href="/" style="text-decoration:none">
+					<font color="white">首页</font><a href="/eth/tokens" style="text-decoration:none"><font color="white">/代币信息</font></a>/#(token.token_name)
+				</small>
+			</p>
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="25%">排名</th>
+						<th width="25%">地址</th>
+						<th width="25%">持有代币数</th>
+						<th width="25%">占总金额的百分比</th>
+					</tr>
+				</thead>
+			<tbody>
+				#for(addr : holderAddress.list)
+				<tr>
+					<td>#((holderAddress.pageNumber-1)*holderAddress.pageSize+for.index+1)</td>
+					<td>#(addr.token_hold_address)</td>
+					<td>#(addr.token_hold_value)</td>
+					<td>#(addr.cus)%</td>
+				</tr>
+				#end
+			</tbody>
+			</table>
+			<nav aria-label="Page navigation">
+				<ul class="pager">
+					#if(holderAddress.pageNumber==1)
+					<li><span>首页</span></li>
+					<li><span>上一页</span></li>
+					#else if(holderAddress.pageNumber>holderAddress.totalPage)
+					<li><a href="/eth/holderAllAddress/#(address)">首页</a></li>
+					<li><a href="/eth/holderAllAddress/#(address)-#(holderAddress.totalPage)">上一页</a></li>
+					#else
+					<li><a href="/eth/holderAllAddress/#(address)">首页</a></li>
+					<li><a href="/eth/holderAllAddress/#(address)-#(holderAddress.pageNumber-1)">上一页</a></li>
+					#end
+					<li><span>#(holderAddress.pageNumber)/#(holderAddress.totalPage)</span></li>
+					#if(holderAddress.pageNumber>=holderAddress.totalPage)				
+					<li><span>下一页</span></li>
+					<li><span>末页</span></li>
+					#else
+					<li><a href="/eth/holderAllAddress/#(address)-#(holderAddress.pageNumber+1)">下一页</a></li>
+					<li><a href="/eth/holderAllAddress/#(address)-#(holderAddress.totalPage)">末页</a></li>
+					#end
+				</ul>
+			</nav>
+	#include("/include/footer.html")
+	</div>
+</body>
+</html>

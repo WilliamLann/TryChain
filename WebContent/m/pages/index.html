@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>试试区块链</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="https://cdn.bootcss.com/mui/3.4.0/css/mui.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/icons-extra.css">
+		<link rel="stylesheet" href="../css/index.css">
+		<script type="text/javascript">
+			if(!navigator.userAgent.match(/iPhone|iPod|Android|ios|iPad|webOS|BlackBerry/i)) window.location.href = "/";
+		</script>
+	</head>
+	<body class="mui-fullscreen">
+		<div id="vue">
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		<div id="home" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="top">
+							<div class="headimg"><img alt="" :src="userimg?userimg:'/img/headimg.png'"></div>
+							<div>{{username}}</div>
+							<div><a href="#receipt"><p>{{address}} <img src="/img/QRc.jpg"></p></a></div>
+						</div>
+						<ul class="center mui-table-view">
+							<li class="mui-table-view-cell"><a href="#detail"><h5><span class="logo"></span>TBC</h5><h5>{{value}}</h5></a></li>
+						</ul>
+						<div class="bottom">
+							<a href="#invite"><img alt="" src="/img/invite_banner.jpg"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="detail" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">TBC</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="top">
+							<div><h4>{{value}} TBC</h4></div>
+						</div>
+						<div class="center">
+							<ul v-if="txsInter.list" class="mui-table-view">
+								<li class="mui-table-view-cell"><p>近期交易记录</p></li>
+								<li v-for="tx in txsInter.list" class="mui-table-view-cell">
+									<p>
+										<span>{{tx.to==address?'您收到':'您转出'}}	 {{tx.intro}}
+											<span class="mui-badge mui-badge-inverted" :class="tx.to==address?'mui-badge-success':'mui-badge-danger'">{{tx.value}}TBC</span>
+										</span>
+										<span>{{tx.periodTime}}</span>
+									</p>
+									<p>{{tx.to==address?tx.from:tx.to}}</p>
+								</li>
+							</ul>
+							<h5 v-if="!txsInter.list">暂无交易记录</h5>
+						</div>
+						<div class="bottom">
+							<a class="mui-btn mui-btn-block mui-btn-primary" href="#trade">转账</a>
+							<a class="mui-btn mui-btn-block mui-btn-success" href="#receipt">收款</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="receipt" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">收款码</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="top">
+							<div></div>
+						</div>
+						<div class="center">
+							<div class="headimg"><img alt="" :src="userimg?userimg:'/img/headimg.png'"></div>
+							<h5>{{address}}</h5>
+							<img id="addrImg" src="" />
+							<button id='addrCopy' class="mui-btn mui-btn-block mui-btn-primary">复制收款地址</button>
+							<input id='addr' class="mui-control-content" :value="address" />
+							<div id='addrQrcode' class="mui-control-content"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="trade" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<button v-if="wechat" id="scanBtn" type="button" class="mui-left mui-btn mui-btn-link mui-btn-nav mui-pull-right">
+					<span class="mui-icon-extra mui-icon-extra-sweep"></span>
+				</button>
+				<h1 class="mui-center mui-title">转账</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell"><h4>余额</h4><h4>{{value}} TBC</h4></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="to" class="mui-input-clear" placeholder="输入转账地址"></li>
+							<li class="right"><a href='#recommend' class="mui-content-padded">不知道地址？点我推荐</a></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="value" class="mui-input-clear" placeholder="输入转账金额"></li>
+						</ul>
+						<div class="mui-content-padded"><button id='tradeBtn' class="mui-btn mui-btn-block mui-btn-primary">转账</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="recommend" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media"><a>换一批</a></li>
+						<li v-for="rand in addressRand" v-if="rand.address!=address" class="mui-table-view-cell mui-media"><a>{{rand.address}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="invite" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">邀请好友</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="top">
+							<div>
+								<span>邀请人数</span>
+								<span>{{num}}</span>
+							</div>
+							<div>
+								<span>邀请奖励</span>
+								<span>{{reward}}TBC</span>
+							</div>
+						</div>
+						<div class="center">
+							<div class="headimg"><img alt="" :src="userimg?userimg:'/img/headimg.png'"></div>
+							<h5>长按二维码保存至相册</h5>
+							<img id="urlImg" src="" />
+							<button id='urlCopy' class="mui-btn mui-btn-block mui-btn-primary">复制链接</button>
+							<input id='url' class="mui-control-content" :value="url" />
+							<div id='urlQrcode' class="mui-control-content"></div>
+						</div>
+						<div class="bottom"><a href="#record">邀请记录</a><a href="#activity">活动细则</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="record" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">邀请记录</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							 <li v-for="record in records" class="mui-table-view-cell">
+							 	<p>
+							 		<span>您获得 <span class="mui-badge mui-badge-success mui-badge-inverted">{{record.value}}TBC</span>{{record.intro}}</span>
+							 		<span>{{record.periodTime}}</span>
+							 	</p>
+							 </li>
+						</ul>
+						<h5 v-if="!records || !records.length">暂无邀请记录</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="activity" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">活动细则</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="mui-card">
+							<div class="mui-card-content">
+								<div class="mui-card-content-inner">
+									<p>1.在本页中选择「二维码邀请好友」或者「复制邀请链接」分享给微信好友或朋友圈;</p>
+									<p>2.好友通过您的邀请链接注册,将会计入邀请人数;</p>
+									<p>3.好友通过您的邀请链接注册完成后,您将获得128个TBC的奖励。后续将根据实际情况对奖励比例进行调整;</p>
+									<p>4.您的好友邀请他人注册完成后,您将获得64个TBC的奖励(好友指通过您的链接注册完成的好友);</p>
+									<p>5.奖励以数字币形式发放;</p>
+									<p>6.同一用户仅能被邀请一次;</p>
+									<p>7.试试区块链保留对本活动的最终修改解释权。</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="login" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<h1 class="mui-center mui-title">登录</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="top">
+							<div class="headimg"><img alt="" :src="userimg?userimg:'/img/headimg.png'"></div>
+							<div>{{username}}</div>
+						</div>
+						<div class="tab">
+							<div class="mui-segmented-control">					
+								<a class="mui-control-item mui-active" href="#item1">动态密码</a>
+								<a class="mui-control-item" href="#item2">账号密码</a>
+							</div>
+						</div>
+						<ul id="item1" class="mui-table-view mui-control-content mui-active">
+							<li class="mui-table-view-cell mui-input-row"><input id="mobile" class="mui-input-clear" placeholder="输入手机号" maxlength="11"></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="loginCode" placeholder="输入验证码" maxlength="6"><span id='loginSendBtn'>发送验证码</span></li>
+							<li class="mui-table-view-cell"><span>温馨提示：未注册用户直接登录即可完成注册</span></li>
+						</ul>
+						<ul id="item2" class="mui-table-view mui-control-content">
+							<li class="mui-table-view-cell mui-input-row"><input id="loginName" class="mui-input-clear" placeholder="输入手机号" maxlength="11"></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="loginPassword" type="password" class="mui-input-password" placeholder="输入密码" maxlength="20"></li>
+							<li class="mui-table-view-cell"><a href="#register">没有账号？注册一个</a></li>
+						</ul>
+						<div class="mui-content-padded">
+							<button id='loginBtn' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+							<img id="wxBtn" src="/img/wx_logo.png"/>
+						</div>
+						<input id='inviterUrl' class="mui-control-content" :value="inviterUrl" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="register" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<h1 class="mui-center mui-title">注册</h1>
+			</div>
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="top"><img alt="" src="/img/invite.jpg"></div>
+						<ul class="mui-table-view">
+							<li v-if="inviterName" class="mui-table-view-cell mui-input-row"><h5>用户 <span class="mui-badge mui-badge-primary mui-badge-inverted">{{inviterName}}</span>邀请您注册</h5></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="registerName" class="mui-input-clear" placeholder="输入手机号" maxlength="11"></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="registerPassword" type="password" class="mui-input-password" placeholder="输入密码" maxlength="20"></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="repassword" type="password" class="mui-input-password" placeholder="确认密码" maxlength="20"></li>
+							<li class="mui-table-view-cell mui-input-row"><input id="registerCode" placeholder="输入验证码" maxlength="6"><span id='registerSendBtn'>发送验证码</span></li>
+							<li v-if="!inviterName" class="mui-table-view-cell mui-input-row"><input id="inviterId" class="mui-input-clear" placeholder="邀请码(选填)" :value="inviterName?inviterId:''" maxlength="20"></li>
+							<li class="mui-table-view-cell"><a href="#login">已有账号？登录</a></li>
+						</ul>
+						<div class="mui-content-padded">
+							<button id='registerBtn' class="mui-btn mui-btn-block mui-btn-primary">注册</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</body>
+	<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+	<script src="https://cdn.bootcss.com/mui/3.4.0/js/mui.min.js"></script>
+	<script src="../js/mui.view.js "></script>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript"></script>
+	<script src="../js/index.js"></script>
+</html>

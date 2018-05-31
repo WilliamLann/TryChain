@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>地址信息</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+		<p class="bg-primary btn-lg">地址信息</p>
+		#if(tbc??)
+		<table class="detail">
+			<tr>
+				<th>账户地址：</th>
+				<td>#(tbc.address) <button type="button" id="copy" class="btn btn-primary btn-xs" data-toggle="popover" data-trigger="manual" data-placement="bottom" data-content="复制成功">复制地址</button></td>
+			</tr>
+			<tr>
+				<th>账户余额：</th>
+				<td>#(tbc.value)
+					#if(tbc.pending<0)
+					<span class="bg-danger">(#(tbc.pending))</span>
+					#else if(tbc.pending>0)
+					<span class="bg-success">(+#(tbc.pending))</span>
+					#end
+					TBC
+				</td>
+			</tr>
+			<tr>
+				<th>交易记录：</th>
+				<td>共#(tbcTxs.totalRow)条</td>
+			</tr>
+			<tr>
+				<th>交易列表：</th>
+				<td><span class="bg-success">&nbsp;&nbsp;&nbsp;&nbsp;</span>为进账，<span class="bg-danger">&nbsp;&nbsp;&nbsp;&nbsp;</span>为出账</td>
+			</tr>
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="10%">序号</th>
+					<th width="20%">交易时间</th>
+					<th width="20%">交易金额</th>
+					<th width="40%">地址</th>
+					<th width="10%">说明</th>
+				</tr>
+			</thead>
+			<tbody>
+				#for(tbcTx : tbcTxs.list)
+				<tr>
+					<td>#(tbcTxs.totalRow-for.index-(tbcTxs.pageNumber-1)*tbcTxs.pageSize)</td>
+					<td>#(tbcTx.periodTime)</td>
+					#if(tbcTx.from==tbc.address)
+					<td class="danger">-#(tbcTx.value) TBC</td>
+					<td><a href="/tbc/address/#(tbcTx.to)">#(tbcTx.to)</a></td>
+					#else if(tbcTx.to==tbc.address)
+					<td class="success">+#(tbcTx.value) TBC</td>
+					<td><a href="/tbc/address/#(tbcTx.from)">#(tbcTx.from)</a></td>
+					#end
+					<td>#(tbcTx.intro)</td>
+				</tr>
+				#end
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation">
+			<ul class="pager">
+				#if(tbcTxs.pageNumber==1)
+				<li><span>首页</span></li>
+				<li><span>上页</span></li>
+				#else if(tbcTxs.pageNumber>tbcTxs.totalPage)
+				<li><a href="#(tbc.address)-1">首页</a></li>
+				<li><a href="#(tbc.address)-#(tbcTxs.totalPage)">上页</a></li>
+				#else
+				<li><a href="#(tbc.address)-1">首页</a></li>
+				<li><a href="#(tbc.address)-#(tbcTxs.pageNumber-1)">上页</a></li>
+				#end
+				<li><span>#(tbcTxs.pageNumber)/#(tbcTxs.totalPage)</span></li>
+				#if(tbcTxs.pageNumber>=tbcTxs.totalPage)
+				<li><span>下页</span></li>
+				<li><span>末页</span></li>
+				#else
+				<li><a href="#(tbc.address)-#(tbcTxs.pageNumber+1)">下页</a></li>
+				<li><a href="#(tbc.address)-#(tbcTxs.totalPage)">末页</a></li>
+				#end
+			</ul>
+		</nav>
+		<input id="address" value="#(tbc.address)" style="display: none;"/>
+		#else
+		<h4>很抱歉，暂时没找到该地址信息</h4>
+		#end
+	</div>
+	#include("/include/footer.html")
+</body>
+<script type="text/javascript">
+	//Copy
+	var $copy = $('#copy');
+	var copyflag;
+	var $address = $('#address');
+	$copy.click(function(){
+		if(copyflag) return;
+		copyflag = true;
+		$address.show().select();
+		document.execCommand('Copy');
+		$address.hide();
+		$copy.popover('show');
+		setTimeout(function(){
+			$copy.popover('hide');
+			copyflag = false;
+		}, 2000);
+	});
+</script>
+</html>
+

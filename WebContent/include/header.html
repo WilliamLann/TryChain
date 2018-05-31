@@ -1,0 +1,151 @@
+<style>
+body{
+	padding-top: 70px;
+}
+a{
+	color: #3498db;
+}
+.btn-primary,
+.bg-primary{
+	background-color: #3498db;
+	border-color: #3498db;
+}
+img.navbar-brand{
+	padding: 0;
+}
+p.bg-primary.btn-lg {
+	border-radius: 6px 6px 0 0;
+}
+.detail{
+	table-layout: fixed;
+	width: 100%;
+	margin-top: -10px;
+	margin-bottom: 20px;
+	border: 1px solid #bce8f1;
+	border-top: 0;
+}
+.detail th,
+.detail td{
+	padding: 8px;
+}
+.detail th{
+	width: 120px;
+}
+.table{
+	table-layout: fixed;
+	text-align: center;
+}
+.table th{
+	text-align: center;
+}
+.detail td,
+.table td{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+/*搜索框校检失败时placeholder的颜色状态*/
+.invalid:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: red;
+    opacity: 1;
+}
+.invalid::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: red;
+    opacity: 1;
+}
+input.invalid:-ms-input-placeholder{
+    color: red;
+}
+input.invalid::-webkit-input-placeholder {
+    color: red;
+}
+</style>
+<div class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">导航</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<img class="navbar-brand hidden-sm" alt="试试区块链" src="/img/logo.png">
+		</div>
+		<div class="navbar-collapse collapse" role="navigation">
+			<ul class="nav navbar-nav">
+				<li #if(nav=="index")class="active"#end><a href="/">首页</a></li>
+				<li class="dropdown">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						以太坊ETH <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li #if(nav=="block")class="active"#end><a href="/eth/latestblocks"><span class="glyphicon glyphicon-th"></span>&nbsp;所有区块</a></li>
+						<li #if(nav=="tx")class="active"#end><a href="/eth/latesttxs"><span class="glyphicon glyphicon-calendar"></span>&nbsp;所有交易</a></li>
+						<li #if(nav=="address")class="active"#end><a href="/eth/topaddress"><span class="glyphicon glyphicon-user"></span>&nbsp;所有账户</a></li>
+						<li #if(nav=="tokens")class="active"#end><a href="/eth/tokens"><span class="glyphicon glyphicon-globe"></span>&nbsp;所有代币</a></li>
+					</ul>
+				</li>
+				<li class="dropdown #if(nav?? && nav.indexOf("tron")==0)active#end">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						波场Tron <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li #if(nav=="tronBlock")class="active"#end><a href="/tron/blocks"><span class="glyphicon glyphicon-th"></span>&nbsp;查看所有区块</a></li>
+						<li #if(nav=="tronTx")class="active"#end><a href="/tron/txs"><span class="glyphicon glyphicon-calendar"></span>&nbsp;查看所有交易</a></li>
+						<li #if(nav=="tronTransfer")class="active"#end><a href="/tron/transfers"><span class="glyphicon glyphicon-transfer"></span>&nbsp;查看所有转账</a></li>
+						<li #if(nav=="tronAccount")class="active"#end><a href="/tron/accounts"><span class="glyphicon glyphicon-user"></span>&nbsp;查看所有账户</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						 数字货币 <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li #if(nav=="trade")class="active"#end><a href="/tbc/tbc"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;我的账户</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="javascript:;" class="dropdown-toggle hidden-md hidden-sm"	data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						 帮助 <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li #if(nav=="transfer")class="active"#end><a href="/help/transfer"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;如何转账</a></li>
+						<li #if(nav=="aboutAbout")class="active"#end><a href="/help/aboutBlock"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;什么是区块链</a></li>
+						<li #if(nav=="properNoun")class="active"#end><a href="/help/properNoun"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;区块链的名词解释</a></li>
+						<li #if(nav=="aboutWallet")class="active"#end><a href="/help/aboutWallet"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>&nbsp;关于钱包</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			#if(ethUsername)
+				<li><a href="/tbc/tbc">#(ethUsername)</a></li>
+				<li><a href="/user/logout#if(redirectUrl)?redirectUrl=#(redirectUrl)#end">退出</a></li>
+			#else
+				<li #if(nav=="login")class="active"#end><a href="/user/login#if(redirectUrl)?redirectUrl=#(redirectUrl)#end">登录</a></li>
+				<li #if(nav=="register")class="active"#end><a href="/user/register#if(redirectUrl)?redirectUrl=#(redirectUrl)#end">注册</a></li>
+			#end
+			</ul>
+			<form class="navbar-form navbar-right" action="/search" onsubmit="return check(this)">
+				<input id="searchValue" name="searchValue" class="form-control" placeholder="输入地址,哈希,区块编号"/>
+				<span class="hidden-md hidden-sm hidden-xs" style="display:inline">
+					<button type="submit" class="btn btn-primary">搜索</button>
+				</span>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function check(form){
+		var reg = /^(0|[1-9]\d*|0x[\dA-Fa-f]{40}|0x[\dA-Fa-f]{64})$/;
+		var searchVal = $.trim(form.searchValue.value);
+		if(reg.test(searchVal)){
+			form.searchValue.value = searchVal;
+			return true;
+		}
+		$("#searchValue").val("");
+		$("#searchValue").attr('class','invalid');
+		$("#searchValue").attr('placeholder','输入有误，请重新输入');
+		return false;
+	}
+</script>
+

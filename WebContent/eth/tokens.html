@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>查看代币</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+		<p class="bg-primary btn-lg">代币信息 <small class="pull-right"><a href="/" style="text-decoration:none"><font color="white">首页</font></a>/代币信息</small></p>
+		<div class="row" style="margin:20px;width:1100px;">
+			<div class="col-sm-3 col-md-3 col-lg-3">
+				以太坊市场资本
+				<p class="text-muted">
+				基于ERC20标准的代币总数：
+				</p>
+				(按照市值降序排序)
+			</div>
+			<div class="col-sm-5 col-md-5 col-lg-5">
+				<nav aria-label="Page navigation">
+					<ul class="pager">
+						#if(tokens.pageNumber==1)
+						<li><span>首页</span></li>
+						<li><span>上一页</span></li>
+						#else if(tokens.pageNumber>tokens.totalPage)
+						<li><a href="/eth/tokens/">首页</a></li>
+						<li><a href="/eth/tokens/#(tokens.totalPage)">上一页</a></li>
+						#else
+						<li><a href="/eth/tokens/">首页</a></li>
+						<li><a href="/eth/tokens/#(tokens.pageNumber-1)">上一页</a></li>
+						#end
+						<li><span>#(tokens.pageNumber)/#(tokens.totalPage)</span></li>
+						#if(tokens.pageNumber>=tokens.totalPage)				
+						<li><span>下一页</span></li>
+						<li><span>末页</span></li>
+						#else
+						<li><a href="/eth/tokens/#(tokens.pageNumber+1)">下一页</a></li>
+						<li><a href="/eth/tokens/#(tokens.totalPage)">末页</a></li>
+						#end
+					</ul>
+				</nav>
+			</div>
+			<div class="col-sm-4 col-md-4 col-lg-4">
+				<form class="navbar-form navbar-right" action="/token" onsubmit="return check(this)">
+					<input id="searchValue" name="searchValue" class="form-control" placeholder="输入ERC20代币名称或合约地址" style="font-size:100%" size="30"/>
+					<span class="hidden-xs" style="display:inline">
+						<button type="submit" class="btn btn-default" style="background: #95a5a6;">搜索</button>
+					</span>
+				</form>
+			</div>
+		</div>
+		<div class="table-responsive" style="margin-top:0px;">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th width="45px">排名</th>
+						<th class="hidden-xs" width="45px">标志</th>
+						<th style="padding-top: 0px;">代币</th>
+						<th class="text-nowrap" width="100px">市场价值</th>
+						<th class="text-nowrap" width="50px">价格日变化百分比</th>
+						<th class="text-nowrap" width="50px">24小时交易总额</th>
+						<th class="text-nowrap" width="50px">总市值</th>
+					</tr>
+				</thead>
+				#for(token : tokens.list)
+				<tbody>
+					<tr>
+						<td>#((tokens.pageNumber-1)*tokens.pageSize+for.index+1)</td>
+						<td></td>
+						<td><a href="/eth/token/#(token.token_address)">#(token.token_name)(#(token.token_symbol))</a></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+				#end
+			</table>
+			<nav aria-label="Page navigation">
+				<ul class="pager">
+					#if(tokens.pageNumber==1)
+					<li><span>首页</span></li>
+					<li><span>上一页</span></li>
+					#else if(tokens.pageNumber>tokens.totalPage)
+					<li><a href="/eth/tokens/">首页</a></li>
+					<li><a href="/eth/tokens/#(tokens.totalPage)">上一页</a></li>
+					#else
+					<li><a href="/eth/tokens/">首页</a></li>
+					<li><a href="/eth/tokens/#(tokens.pageNumber-1)">上一页</a></li>
+					#end
+					<li><span>#(tokens.pageNumber)/#(tokens.totalPage)</span></li>
+					#if(tokens.pageNumber>=tokens.totalPage)				
+					<li><span>下一页</span></li>
+					<li><span>末页</span></li>
+					#else
+					<li><a href="/eth/tokens/#(tokens.pageNumber+1)">下一页</a></li>
+					<li><a href="/eth/tokens/#(tokens.totalPage)">末页</a></li>
+					#end
+				</ul>
+			</nav>
+		</div>
+	</div>
+	#include("/include/footer.html")
+</body>
+</html>

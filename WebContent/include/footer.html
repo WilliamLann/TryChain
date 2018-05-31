@@ -1,0 +1,55 @@
+<style>
+	#footer{
+		position:absolute;
+		bottom: 0;
+		background-color:#f7f7f7;
+		width:100%;
+	}
+</style>
+<div id="footer">
+	<div class="container"> 
+		<div class="row">
+			<div class="col-lg-6 col-sm-6 col-md-6">
+				<h3>联系我们</h3><br>
+				<p>地址:湖南省长沙市麓谷企业广场F1栋4楼</p>
+				<p>企业邮箱:lanwei@mingzedata.com</p>
+				<p>湘ICP备18004801号</p>
+				Copyright © 2018 www.trychain.net All rights reserved. 				
+			</div>
+			<div class="col-lg-6 col-sm-6 col-md-6">
+				<div style="float:left">
+					<h3>关注我们&nbsp;</h3>
+				</div><br>
+				<img alt="" src="/img/QRc.jpg" style="width:150px;height:150px;">
+			</div>
+		</div>
+	</div>	
+</div>
+<script type="text/javascript">
+	// Window load event used just in case window height is dependant upon images
+	$(function() {
+		var footerHeight = 0;
+		var footerTop = 0;
+		var $footer = $("#footer");
+		positionFooter();
+		
+		//定义position Footer function
+		function positionFooter() {
+			//取到div#footer高度
+			footerHeight = $footer.height();
+			//div#footer离屏幕顶部的距离
+			footerTop = ( $(window).scrollTop()+$(window).height()-footerHeight)+"px";
+			//如果页面内容高度小于屏幕高度，div#footer将绝对定位到屏幕底部，否则div#footer保留它的正常静态定位
+			if(($(document.body).height()+footerHeight) < $(window).height()) {
+				$footer.css({
+					position: "absolute",
+					top: footerTop
+				});
+			} else{
+				$footer.css({
+					position: "static"
+				});
+			}
+		}
+	});
+</script>

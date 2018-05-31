@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>账户信息</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+		<p class="bg-primary btn-lg">账户信息</p>
+		#if(addr??)
+		<table class="detail">
+			<tr>
+				<th>账户地址：</th>
+				<td>#(addr.address)</td>
+			</tr>
+			#if(addr.name??)
+			<tr>
+				<th>账户名：</th>
+				<td>#(addr.name)</td>
+			</tr>
+			#end
+			<tr>
+				<th>Tron余额：</th>
+				<td>#number(addr.minValue, "#,###.##")TRX</td>
+			</tr>
+			<tr>
+				<th>Tron Power：</th>
+				<td>#number(addr.minPower, "#,###")</td>
+			</tr>
+			<tr>
+				<th>交易记录：</th>
+				<td>共#(txs.totalRow)条</td>
+			</tr>
+			<tr>
+				<th>交易列表：</th>
+				<td><span class="bg-success">&nbsp;&nbsp;&nbsp;&nbsp;</span>为进账，<span class="bg-danger">&nbsp;&nbsp;&nbsp;&nbsp;</span>为出账</td>
+			</tr>
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="20%">哈希值</th>
+					<th width="10%">区块高度</th>
+					<th width="10%">交易时间</th>
+					<th width="20%">发送地址</th>
+					<th width="5%"></th>
+					<th width="20%">接收地址</th>
+					<th width="15%">金额</th>
+				</tr>
+			</thead>
+			<tbody>
+				#for(tx : txs.list)
+				<tr>
+					<td><a href="/tron/tx/#(tx.hash)">#(tx.hash)</a></td>
+					<td><a href="/tron/block/#(tx.block)">#(tx.block)</a></td>
+					<td>#(tx.periodTime)</td>
+					#if(tx.tran_from==addr.address)
+					<td><span>#(tx.tran_from)</span></td>
+					<td><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+					<td><a href="/tron/account/#(tx.tran_to)">#(tx.tran_to)</a></td>
+					<td class="danger">#number(tx.minValue, "#,###.##")TRX</td>
+					#else if(tx.tran_to==addr.address)
+					<td><a href="/tron/account/#(tx.tran_from)">#(tx.tran_from)</a></td>
+					<td><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+					<td><span>#(tx.tran_to)</span></td>
+					<td class="success">#number(tx.minValue, "#,###.##")TRX</td>
+					#end
+				</tr>
+				#end
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation">
+			<ul class="pager">
+				#if(txs.pageNumber==1)
+				<li><span>首页</span></li>
+				<li><span>上一页</span></li>
+				#else if(txs.pageNumber>txs.totalPage)
+				<li><a href="/tron/account/#(addr.address)-1">首页</a></li>
+				<li><a href="/tron/account/#(addr.address)-#(txs.totalPage)">上一页</a></li>
+				#else
+				<li><a href="/tron/account/#(addr.address)-1">首页</a></li>
+				<li><a href="/tron/account/#(addr.address)-#(txs.pageNumber-1)">上一页</a></li>
+				#end				
+				<li><span>#(txs.pageNumber)/#(txs.totalPage)</span></li>
+				#if(txs.pageNumber>=txs.totalPage)
+				<li><span>下一页</span></li>
+				<li><span>末页</span></li>
+				#else
+				<li><a href="/tron/account/#(addr.address)-#(txs.pageNumber+1)">下一页</a></li>
+				<li><a href="/tron/account/#(addr.address)-#(txs.totalPage)">末页</a></li>
+				#end
+			</ul>
+		</nav>
+		#else
+		<h4>很抱歉，暂时没找到该账户信息</h4>
+		#end
+	</div>
+	#include("/include/footer.html")
+</body>
+</html>
+

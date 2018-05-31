@@ -1,0 +1,463 @@
+[v-cloak] {
+	display: none;
+}
+html,
+body {
+	background-color: #efeff4;
+}
+.mui-views,
+.mui-view,
+.mui-pages,
+.mui-page,
+.mui-page-content {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #efeff4;
+}
+.mui-pages {
+	top: 44px;
+	height: auto;
+}
+.mui-page.mui-transitioning {
+	-webkit-transition: -webkit-transform 300ms ease;
+	transition: transform 300ms ease;
+}
+.mui-page-left {
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+.mui-ios .mui-page-left {
+	-webkit-transform: translate3d(-20%, 0, 0);
+	transform: translate3d(-20%, 0, 0);
+}
+.mui-navbar {
+	position: fixed;
+	right: 0;
+	left: 0;
+	z-index: 10;
+	height: 44px;
+	background-color: #87CEFF;
+}
+.mui-navbar .mui-bar {
+	position: absolute;
+	background-color: #87CEFF;
+	text-align: center;
+	box-shadow: 0 0;
+}
+.mui-navbar .mui-bar .mui-left,
+.mui-navbar .mui-bar .mui-center,
+.mui-navbar .mui-bar .mui-right {
+	color: #fff;
+}
+.mui-navbar .mui-bar .mui-icon-left-nav {
+	font-size: 28px;
+}
+.mui-android .mui-navbar-inner.mui-navbar-left {
+	opacity: 0;
+}
+.mui-ios .mui-navbar-left .mui-left,
+.mui-ios .mui-navbar-left .mui-center,
+.mui-ios .mui-navbar-left .mui-right {
+	opacity: 0;
+}
+.mui-navbar .mui-btn-nav {
+	-webkit-transition: none;
+	transition: none;
+	-webkit-transition-duration: .0s;
+	transition-duration: .0s;
+}
+.mui-navbar .mui-bar .mui-title {
+	display: inline-block;
+	width: auto;
+}
+.mui-page-shadow {
+	position: absolute;
+	right: 100%;
+	top: 0;
+	width: 16px;
+	height: 100%;
+	z-index: -1;
+	content: '';
+}
+.mui-page-shadow {
+	background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+	background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+}
+.mui-navbar-inner.mui-transitioning,
+.mui-navbar-inner .mui-transitioning {
+	-webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+	transition: opacity 300ms ease, transform 300ms ease;
+}
+.mui-page {
+	display: none;
+}
+.mui-pages .mui-page {
+	display: block;
+}
+.mui-table-view-divider:before,
+.mui-table-view-divider:after {
+	height: 0;
+}
+.mui-fullscreen {
+	position: fixed;
+	z-index: 20;
+	background-color: #000;
+}
+.mui-ios .mui-navbar .mui-bar .mui-title {
+	position: static;
+}
+.mui-popup-text {
+	word-break: break-all;
+}
+
+#home .mui-scroll {
+	height: 100%;
+	background-color: #fff;
+}
+#home .top {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	height: 180px;
+	width: 100%;
+	background-color: #87CEFF;
+	color: #fff;
+}
+#home .top .headimg {
+	display: block;
+	padding: 3px;
+	height: 60px;
+	width: 60px;
+	border-radius: 50%;
+	background-color: #fff;
+	z-index: 30;
+}
+#home .top .headimg img {
+	width: 100%;
+	border-radius: 50%;
+}
+#home .top p {
+	font-size: 12px;
+	color: #fff;
+	margin: 0;
+}
+#home .top p img {
+	width: 20px;
+	margin-bottom: -5px;
+}
+#home .center {
+	padding-top: 20px;
+}
+#home .center li a {
+ 			display: flex;
+	justify-content: space-between;
+}
+#home .center li h5 {
+	display: flex;
+	align-items: center;
+}
+#home .center .logo {
+	display: block;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    background-image: url(/img/logo.jpg);
+    background-repeat: no-repeat;
+    background-size: 90px;
+}
+#home .bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+#home .bottom img {
+	width: 100%;
+	height: 60px;
+	margin-bottom: -5px;
+}
+
+#detail .mui-scroll {
+	height: 100%;
+}
+#detail .top {
+	display: flex;
+	height: 80px;
+	width: 100%;
+	background-color: #87CEFF;
+}
+#detail .top div {
+	flex: 1;
+	color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#detail .center li p:first-child {
+ 			display: flex;
+	justify-content: space-between;
+}
+#detail .center li p {
+	font-size: 12px;
+}
+#detail .center h5 {
+	padding: 10px;
+	text-align: center;
+}
+#detail .bottom {
+	display: flex;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+#detail .bottom .mui-btn {
+	padding: 10px;
+	margin: 0;
+}
+#trade li.mui-active {
+	background-color: #fff;
+}
+#trade li:first-child {
+	display: flex;
+	justify-content: space-between;
+	color: #87CEFF;
+}
+#trade li input {
+	font-size: 14px;
+	width: 100%;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	height: 16px;
+}
+#trade li input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important; 
+	border: 0;
+	margin:0;
+	padding: 0;
+}
+#trade li input#to {
+	font-size: 12px;
+}
+#trade li input::-webkit-input-placeholder {
+	font-size: 14px;
+}
+#trade li a {
+	font-size: 14px;
+}
+#trade .right {
+	text-align: right;
+}
+#scanBtn {
+	display: flex;
+	height: 100%;
+}
+#trade .mui-btn {
+	padding: 10px;
+	margin: 0;
+}
+#recommend.mui-popover {
+	height: 300px;
+	text-align: center;
+}
+#recommend .mui-table-view-cell a {
+	font-size: 14px;
+	color: #007aff;
+}
+#receipt {
+	text-align: center;
+}
+#receipt .top {
+	display: flex;
+	height: 80px;
+	width: 100%;
+	background-color: #87CEFF;
+}
+#receipt .top div {
+	flex: 1;
+	color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#receipt .headimg {
+	display: block;
+	margin: -50px auto 0;
+	padding: 3px;
+	height: 70px;
+	width: 70px;
+	border-radius: 50%;
+	background-color: #fff;
+	z-index: 30;
+}
+#receipt .headimg img {
+	width: 100%;
+	border-radius: 50%;
+}
+#receipt .mui-scroll-wrapper {
+	background-color: #fff;
+}
+#receipt .mui-scroll .center {
+	padding: 0 20px;
+	margin: 15px 0;
+}
+#receipt h5 {
+	font-size: 12px;
+}
+#receipt #addrImg{
+	padding: 10px;
+	max-width: 100%;
+}
+#receipt .mui-btn {
+	padding: 10px;
+}
+
+#invite {
+	text-align: center;
+}
+#invite .top {
+	display: flex;
+	height: 80px;
+	width: 100%;
+	background-color: #87CEFF;
+}
+#invite .top div {
+	flex: 1;
+	color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#invite .headimg {
+	display: block;
+	margin: -50px auto 0;
+	padding: 3px;
+	height: 70px;
+	width: 70px;
+	border-radius: 50%;
+	background-color: #fff;
+	z-index: 30;
+}
+#invite .headimg img {
+	width: 100%;
+	border-radius: 50%;
+}
+#invite .mui-scroll-wrapper {
+	background-color: #fff;
+}
+#invite .mui-scroll .center {
+	padding: 0 30px;
+	margin: 15px 0;
+}
+#invite #urlImg{
+	max-width: 100%;
+}
+#invite .mui-btn {
+	padding: 10px;
+}
+#invite .bottom {
+	display: flex;
+	justify-content: space-between;
+	margin: 15px;
+}
+#record h5 {
+	padding: 10px;
+	text-align: center;
+}
+#record li p {
+ 	display: flex;
+	justify-content: space-between;
+	font-size: 12px;
+}
+
+#login .top {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	height: 100px;
+	width: 100%;
+	background-color: #87CEFF;
+	color: #fff;
+}
+#login .top .headimg {
+	display: block;
+	padding: 3px;
+	height: 60px;
+	width: 60px;
+	border-radius: 50%;
+	background-color: #fff;
+	z-index: 30;
+}
+#login .top .headimg img {
+	width: 100%;
+	border-radius: 50%;
+}
+#login .tab {
+	padding: 10px;
+}
+#login li input,
+#register li input {
+	width: 100%;
+	font-size: 14px;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	height: 16px;
+}
+#login li input:-webkit-autofill,
+#register li input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important; 
+	border: 0;
+	margin:0;
+	padding: 0;
+}
+#login li span:first-child {
+	color: gray;
+	font-size: 12px;
+	line-height: 18px;
+}
+#login li a,
+#register li a	{
+	font-size: 14px;
+	float: right;
+	color: #007aff;
+}
+#login li #loginSendBtn,
+#register li #registerSendBtn {
+	font-size: 14px;
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	color: #007aff;
+	padding: 10px 10px;
+	margin-top: -10px;
+}
+#login li.mui-active,
+#login li a.mui-active,
+#register li.mui-active,
+#register li a.mui-active {
+	background-color: #fff;
+}
+#login .mui-btn,
+#register .mui-btn {
+	padding: 10px;
+}
+#login #wxBtn{
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+#register .top img{
+	width: 100%;
+}

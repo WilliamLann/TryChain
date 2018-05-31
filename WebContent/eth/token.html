@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>#(token.token_name)&nbsp;(#(token.token_symbol))</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+		#include("/include/header.html")
+		<div class="container">
+			<p class="bg-primary btn-lg">#(token.token_name)&emsp;<small>#(token.token_symbol)</small>
+				<small class="pull-right"><a href="/" style="text-decoration:none">
+					<font color="white">首页</font><a href="/eth/tokens" style="text-decoration:none"><font color="white">/代币信息</font></a>/#(token.token_name)
+				</small>
+			</p>
+			<div class="row" style="margin:30px;">
+				<div class="col-sm-6 col-md-6 col-lg-6">
+					<p>
+						代币总数：#(token.token_totalSupply)&nbsp;#(token.token_symbol)
+					</p>
+					<p>
+						代币持有者总数：#(holders.num)
+					</p>
+					<p>
+						交易总数：#(txNum)
+					</p>
+				</div>
+				<div class="col-sm-6 col-md-6 col-lg-6">
+					<div style="float:left">
+						<div>
+							合约地址：#(address)
+						</div><br>
+						<form class="navbar-form" action="/token" onsubmit="return check(this)">
+							<input id="searchValue" name="searchValue" class="form-control" placeholder="输入地址、交易哈希值" style="font-size:100%" size="30"/>
+							<span class="hidden-xs" style="display:inline">
+								<button type="submit" class="btn btn-default" style="background: #95a5a6;">搜索</button>
+							</span>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+				  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">代币交易记录</a></li>
+				  <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">代币持有者地址</a></li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content">
+				  <div role="tabpanel" class="tab-pane active" id="home">
+				  	<table class="table">
+						<thead>
+							<tr>
+								<th width="15%">交易哈希值</th>
+								<th width="25%">交易时间</th>
+								<th width="20%">发送者</th>
+								<th width="5%"></th>
+								<th width="20%">接收者</th>
+								<th width="15%">金额</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(tx : txs.list)
+							<tr>
+								<td><a href="/eth/tx/#(tx.hash)">#(tx.hash)</a></td>
+								<td>#(tx.periodTime)&nbsp;#(tx.time)</td>
+								<td><a href="/eth/tokenAddress/#(address)?a=#(tx.token_from)">#(tx.token_from)</a></td>
+								<td><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+								<td><a href="/eth/tokenAddress/#(address)?a=#(tx.token_to)">#(tx.token_to)</a></td>
+								<td class=>#(tx.token_value)#(token.token_symbol)</td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+					<nav aria-label="Page navigation">
+						<ul class="pager">
+							#if(txs.pageNumber==1)
+							<li><span>首页</span></li>
+							<li><span>上一页</span></li>
+							#else if(txs.pageNumber>txs.totalPage)
+							<li><a href="/eth/token/#(address)">首页</a></li>
+							<li><a href="/eth/token/#(address)-#(txs.totalPage)">上一页</a></li>
+							#else
+							<li><a href="/eth/token/#(address)">首页</a></li>
+							<li><a href="/eth/token/#(address)-#(txs.pageNumber-1)">上一页</a></li>
+							#end
+							<li><span>#(txs.pageNumber)/#(txs.totalPage)</span></li>
+							#if(txs.pageNumber>=txs.totalPage)				
+							<li><span>下一页</span></li>
+							<li><span>末页</span></li>
+							#else
+							<li><a href="/eth/token/#(address)-#(txs.pageNumber+1)">下一页</a></li>
+							<li><a href="/eth/token/#(address)-#(txs.totalPage)">末页</a></li>
+							#end
+						</ul>
+					</nav>
+				  </div>
+				  <div role="tabpanel" class="tab-pane" id="profile">
+				  	<table class="table">
+						<thead>
+							<tr>
+								<th width="25%">排名</th>
+								<th width="25%">地址</th>
+								<th width="25%">持有代币数</th>
+								<th width="25%">占总金额的百分比</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(addr : holderAddress)
+							<tr>
+								<td>#(for.index+1)</td>
+								<td>#(addr.token_hold_address)</td>
+								<td>#(addr.token_hold_value)</td>
+								<td>#(addr.hah)%</td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+					<a href="/eth/holderAllAddress/#(address)" class="btn btn-primary btn-sm pull-right" role="button">查看全部</a><br>
+				  </div>
+				</div>
+			</div>
+		</div>
+		#include("/include/footer.html")
+</body>
+</html>

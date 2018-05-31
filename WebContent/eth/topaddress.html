@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>地址列表</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+		<p class="bg-primary btn-lg">地址列表</p>
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="20%">排名</th>
+					<th width="50%">地址</th>
+					<th width="30%">余额</th>
+				</tr>
+			</thead>
+			<tbody>
+				#for(addr : address.list)
+				<tr>
+					<td id="list">#((address.pageNumber-1)*address.pageSize+for.index+1)</td>
+					<td><a href="/eth/address/#(addr.address)">#(addr.address)</a></td>
+					<td>#(addr.minValue)Ether</td>
+				</tr>
+				#end
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation">
+			<ul class="pager">
+				#if(address.pageNumber==1)
+				<li><span>首页</span></li>
+				<li><span>上一页</span></li>
+				#else if(address.pageNumber>address.totalPage)
+				<li><a href="/eth/topaddress/">首页</a></li>
+				<li><a href="/eth/topaddress/#(address.totalPage)">上一页</a></li>
+				#else
+				<li><a href="/eth/topaddress/">首页</a></li>
+				<li><a href="/eth/topaddress/#(address.pageNumber-1)">上一页</a></li>
+				#end
+				<li><span>#(address.pageNumber)/#(address.totalPage)</span></li>
+				#if(address.pageNumber>=address.totalPage)				
+				<li><span>下一页</span></li>
+				<li><span>末页</span></li>
+				#else
+				<li><a href="/eth/topaddress/#(address.pageNumber+1)">下一页</a></li>
+				<li><a href="/eth/topaddress/#(address.totalPage)">末页</a></li>
+				#end
+			</ul>
+		</nav>
+	</div> 
+	#include("/include/footer.html")
+</body>
+</html>
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>区块列表</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	#include("/include/header.html")
+	<div class="container">
+		<p class="bg-primary btn-lg">区块列表 <small>&nbsp;(总区块数：共#(blocks.totalRow)条)</small></p>
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="10%">区块高度</th>
+					<th width="15%">区块时间</th>
+					<th width="10%">交易数</th>
+					<th width="40%">矿工</th>
+					<th width="10%">区块大小</th>
+				</tr>
+			</thead>
+			<tbody>
+				#for(block : blocks.list)
+				<tr>
+					<td><a href="/tron/block/#(block.number)">#(block.number)</a></td>
+					<td class="time">
+						<div>#(block.periodTime)</div>
+					</td>
+					<td>#(block.nrOfTrx)</td>
+					<td><a href="/tron/account/#(block.witnessAddress)">#(block.witnessAddress)</a></td>
+					<td>#(block.size)</td>
+				</tr>
+				#end
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation">
+			<ul class="pager">
+				#if(blocks.pageNumber==1)
+				<li><span>首页</span></li>
+				<li><span>上一页</span></li>
+				#else if(blocks.pageNumber>blocks.totalPage)
+				<li><a href="/tron/blocks">首页</a></li>
+				<li><a href="/tron/blocks/#(blocks.totalPage)">上一页</a></li>
+				#else
+				<li><a href="/tron/blocks">首页</a></li>
+				<li><a href="/tron/blocks/#(blocks.pageNumber-1)">上一页</a></li>
+				#end
+				<li><span>#(blocks.pageNumber)/#(blocks.totalPage)</span></li>
+				#if(blocks.pageNumber>=blocks.totalPage)				
+				<li><span>下一页</span></li>
+				<li><span>末页</span></li>
+				#else
+				<li><a href="/tron/blocks/#(blocks.pageNumber+1)">下一页</a></li>
+				<li><a href="/tron/blocks/#(blocks.totalPage)">末页</a></li>
+				#end
+			</ul>
+		</nav>
+	</div>
+	#include("/include/footer.html")
+</body>
+</html>
+

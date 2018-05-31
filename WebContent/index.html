@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/favicon.ico">
+	<title>试试区块链—在这里,走进区块链世界  | 比特币,以太坊,Bitcoin,Ethereum,数字货币</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/highcharts/6.0.7/highcharts.js"></script>
+	<script	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/linechart.js"></script>
+	<script type="text/javascript">
+		if(navigator.userAgent.match(/iPhone|iPod|Android|ios|iPad|webOS|BlackBerry/i)) window.location.href = "/m/pages/index.html";
+	</script>
+	<style>
+		.container small {
+			width: 350px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			display: inline-block;
+		}
+		.distance{
+			padding-top: 10px;
+			padding-right: 10px;
+			padding-bottom: 10px;
+			padding-left: 10px;
+		}
+		#scroll-1{
+			overflow:auto;
+			height:600px;
+			width: 100%;
+		}
+		#scroll-1::-webkit-scrollbar{width:5px;display:none}
+		#scroll-1::-webkit-scrollbar-track{background-color:white;}
+		#scroll-1::-webkit-scrollbar-thumb{background-color:grey;}
+		#scroll-2{
+			overflow:auto;
+			height:600px;
+			width: 100%;
+		}
+		#scroll-2::-webkit-scrollbar{width:5px;display:none}
+		#scroll-2::-webkit-scrollbar-track{background-color:white;}
+		#scroll-2::-webkit-scrollbar-thumb{background-color:grey;}
+		
+	</style>
+</head>
+<body>
+  	#include("/include/header.html")
+		<div class="container" style="background-color:#f7f7f7;">
+			<div id="perDayTxSum" style="display:none">
+				#(perDayTxSum)
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-lg-12">
+					<div id="linechart"></div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-6 col-md-6 col-lg-6">
+					<div class="panel panel-profile no-bg">
+						<div class="panel-heading">
+							<h4><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>区块<a href="/eth/latestblocks" class="btn btn-primary btn-sm pull-right" role="button">查看全部</a></h4>
+						</div>
+						<div id="scroll-1">
+							<table class="table table-condensed">
+								<tbody>
+								#for(block : blocks)
+									<tr>
+										<td>
+											<div style="width:600px;">
+												<div class="pull-left" style="line-height:40px; background:url(/img/block_bg.jpg.png); width:180px; height:88px;text-align:center">
+													<a href="/eth/block/#(block.number)"><font size="2" color="white">区块&nbsp;#(block.number)</font></a>
+													<h4><font size="2" color="white">#(block.periodTime)</font></h4>
+												</div>
+												<div style="line-height:40px;">
+													<div">
+														<small>&emsp;矿工:<a href="/eth/address/#(block.miner)">#(block.miner)</a></small>
+													</div>
+													<small>&emsp;<a href="/eth/block/#(block.number)">共<b>#(block.transactionsNum)</b>笔交易</a></small>
+												</div>
+											</div>
+										</td>
+									</tr>
+								#end
+								</tbody>
+							</table>
+						</div>				
+					</div>
+				</div>
+				
+				<div class="col-sm-6 col-md-6 col-lg-6">
+					<div class="panel panel-profile no-bg">
+						<div class="panel-heading">
+							<h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>交易<a href="/eth/latesttxs" class="btn btn-primary btn-sm pull-right" role="button">查看全部</a></h4>
+						</div>
+						<div id="scroll-2">
+							<table class="table table-condensed">
+								<tbody>
+								#for(tx : txs)
+									<tr>
+										<td class="text-muted">
+											<div style="width:600px;">
+												<div class="pull-left">
+													&emsp;<img alt="" src="/img/icon.png" width="62" height="52" style="margin-top:20px;">
+												</div>
+												<div>
+													<small>&emsp;Tx#<a href="/eth/tx/#(tx.hash)"> #(tx.hash)</a></small>
+												</div>
+												<div>
+													<small>&emsp;接收<a href="/eth/address/#(tx.to_address)"> #(tx.to_address)</a></small>
+												</div>
+												<div>
+													<small>&emsp;发送<a href="/eth/address/#(tx.from_address)"> #(tx.from_address)</a></small>
+												</div>
+												<div>
+													<small>&emsp;#(tx.periodTime)</small>
+												</div>
+											</div>
+										</td>
+									</tr>
+								#end
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<br>
+		#include("/include/footer.html")
+</body>
+</html>
